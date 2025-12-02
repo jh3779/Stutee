@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Stuttee mock backend for problem generation",
+  "main": "server.js",
+  "scripts": {
+    "start": "\"C:\\\\Program Files\\\\nodejs\\\\node.exe\" server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
+  }
+}
