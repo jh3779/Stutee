@@ -1,48 +1,45 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stuttee (S.T) - 학습 문제 생성 MVP</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stuttee (S.T) - 퀴즈 생성</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app">
+  <div class="app">
     <header class="hero">
       <div>
-        <p class="eyebrow">AI 학습 보조</p>
+        <p class="eyebrow">AI 기반 학습 도우미</p>
         <h1>Stuttee (S.T)</h1>
-        <p class="tagline">학습 내용을 붙여넣고 옵션을 선택하면 즉시 연습 문제를 생성합니다.</p>
+        <p class="tagline">학습 노트를 붙여 넣고, 난이도와 문항 수를 선택해 바로 퀴즈를 생성하세요.</p>
       </div>
     </header>
 
     <main class="layout">
       <section class="card">
         <h2>입력</h2>
-        <label class="label" for="sourceText">학습 텍스트</label>
-        <textarea id="sourceText" rows="6" placeholder="강의 노트나 요약본을 붙여넣으세요."></textarea>
+        <label class="label" for="studyText">학습 노트</label>
+        <textarea id="studyText" rows="8" placeholder="강의 노트나 교재 내용을 붙여 넣으세요."></textarea>
 
         <div class="options">
           <div class="field">
-            <label class="label" for="countSelect">문항 수</label>
-            <select id="countSelect">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
+            <label class="label" for="difficulty">난이도</label>
+            <select id="difficulty">
+              <option value="easy">쉬움 (easy)</option>
+              <option value="medium" selected>중간 (medium)</option>
+              <option value="hard">어려움 (hard)</option>
             </select>
           </div>
           <div class="field">
-            <label class="label" for="levelSelect">난이도</label>
-            <select id="levelSelect">
-              <option value="easy">쉬움</option>
-              <option value="medium">보통</option>
-              <option value="hard">어려움</option>
-            </select>
+            <label class="label" for="count">문항 수</label>
+            <input id="count" type="number" min="1" max="20" value="5" />
           </div>
           <div class="field">
-            <label class="label" for="typeSelect">문제 유형</label>
-            <select id="typeSelect">
-              <option value="multiple-choice">객관식</option>
+            <label class="label" for="questionType">문제 유형</label>
+            <select id="questionType">
+              <option value="multiple-choice" selected>객관식</option>
               <option value="short-answer">주관식</option>
               <option value="mixed">혼합</option>
             </select>
@@ -50,30 +47,23 @@
         </div>
 
         <button id="generateBtn" class="primary">문제 생성</button>
+        <p id="statusText" class="muted small">학습 노트를 입력하고 옵션을 선택한 뒤 생성 버튼을 눌러주세요.</p>
       </section>
 
       <section class="card results">
         <div class="results-header">
           <div>
             <p class="eyebrow">결과</p>
-            <h2>생성된 문제</h2>
-          </div>
-          <div class="results-actions">
-            <select id="langSelect" class="compact-select">
-              <option value="ko">한국어 (ko)</option>
-              <option value="en">영어 (en)</option>
-              <option value="ja">일본어 (ja)</option>
-            </select>
-            <button id="translateBtn" class="ghost" disabled>번역</button>
-            <button id="copyAllBtn" class="ghost" disabled>전체 복사</button>
+            <h2>생성된 퀴즈</h2>
           </div>
         </div>
-        <div id="resultsContainer" class="results-list">
-          <p class="muted">아직 문제가 없습니다. 텍스트를 붙여넣고 생성해 보세요.</p>
+        <div id="results" class="results-list">
+          <p class="muted">아직 문제가 없습니다. 학습 노트를 붙여 넣고 생성 버튼을 눌러보세요.</p>
         </div>
       </section>
     </main>
   </div>
+
   <script src="main.js"></script>
 </body>
 </html>
