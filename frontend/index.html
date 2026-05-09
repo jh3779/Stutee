@@ -1,69 +1,148 @@
-<!-- index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stuttee (S.T) - 퀴즈 생성</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="app">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">AI 기반 학습 도우미</p>
-        <h1>Stuttee (S.T)</h1>
-        <p class="tagline">학습 노트를 붙여 넣고, 난이도와 문항 수를 선택해 바로 퀴즈를 생성하세요.</p>
-      </div>
-    </header>
-
-    <main class="layout">
-      <section class="card">
-        <h2>입력</h2>
-        <label class="label" for="studyText">학습 노트</label>
-        <textarea id="studyText" rows="8" placeholder="강의 노트나 교재 내용을 붙여 넣으세요."></textarea>
-
-        <div class="options">
-          <div class="field">
-            <label class="label" for="difficulty">난이도</label>
-            <select id="difficulty">
-              <option value="easy">쉬움 (easy)</option>
-              <option value="medium" selected>중간 (medium)</option>
-              <option value="hard">어려움 (hard)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label class="label" for="count">문항 수</label>
-            <input id="count" type="number" min="1" max="20" value="5" />
-          </div>
-          <div class="field">
-            <label class="label" for="questionType">문제 유형</label>
-            <select id="questionType">
-              <option value="multiple-choice" selected>객관식</option>
-              <option value="short-answer">주관식</option>
-              <option value="mixed">혼합</option>
-            </select>
-          </div>
-        </div>
-
-        <button id="generateBtn" class="primary">문제 생성</button>
-        <p id="statusText" class="muted small">학습 노트를 입력하고 옵션을 선택한 뒤 생성 버튼을 눌러주세요.</p>
-      </section>
-
-      <section class="card results">
-        <div class="results-header">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stutee - AI 문제 생성</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">ST</div>
           <div>
-            <p class="eyebrow">결과</p>
-            <h2>생성된 퀴즈</h2>
+            <strong>Stutee</strong>
+            <span>Study Quiz Studio</span>
           </div>
         </div>
-        <div id="results" class="results-list">
-          <p class="muted">아직 문제가 없습니다. 학습 노트를 붙여 넣고 생성 버튼을 눌러보세요.</p>
-        </div>
-      </section>
-    </main>
-  </div>
 
-  <script src="main.js"></script>
-</body>
+        <nav class="nav-list" aria-label="페이지 이동">
+          <a class="nav-link active" href="#generator">생성</a>
+          <a class="nav-link" href="#results">결과</a>
+          <a class="nav-link" href="#history">이력</a>
+          <a class="nav-link" href="#status">상태</a>
+        </nav>
+
+        <div class="quota-box">
+          <span>오늘 생성</span>
+          <strong id="dailyUsage">0 / 20</strong>
+          <div class="meter" aria-hidden="true"><i id="dailyMeter"></i></div>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <section class="topbar">
+          <div>
+            <h1>학습 문제 생성</h1>
+            <p id="statusText">학습 텍스트를 입력하고 문제를 생성하세요.</p>
+          </div>
+          <div class="actions">
+            <button class="ghost-button" id="sampleBtn" type="button">샘플 입력</button>
+            <button class="ghost-button danger" id="resetBtn" type="button">초기화</button>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <form class="panel generator-panel" id="generator">
+            <div class="panel-heading">
+              <h2>원문 입력</h2>
+              <span id="charCount">0 / 5000</span>
+            </div>
+            <textarea id="studyText" rows="12" maxlength="5000" placeholder="강의 노트, 교재 요약, 발표 자료 내용을 붙여 넣으세요."></textarea>
+            <p class="field-message" id="inputMessage" role="status"></p>
+
+            <div class="option-grid">
+              <fieldset>
+                <legend>문제 유형</legend>
+                <label><input type="checkbox" name="questionType" value="multiple-choice" checked> 객관식</label>
+                <label><input type="checkbox" name="questionType" value="short-answer" checked> 주관식</label>
+                <label><input type="checkbox" name="questionType" value="true-false" checked> OX</label>
+                <label><input type="checkbox" name="questionType" value="fill-blank" checked> 빈칸</label>
+              </fieldset>
+
+              <fieldset>
+                <legend>난이도</legend>
+                <div class="segmented">
+                  <label><input type="radio" name="difficulty" value="easy"><span>쉬움</span></label>
+                  <label><input type="radio" name="difficulty" value="medium" checked><span>보통</span></label>
+                  <label><input type="radio" name="difficulty" value="hard"><span>어려움</span></label>
+                </div>
+              </fieldset>
+
+              <label class="range-control">
+                <span>문항 수</span>
+                <input id="count" type="range" min="1" max="20" value="5">
+                <strong id="countValue">5</strong>
+              </label>
+            </div>
+
+            <button class="primary-button" id="generateBtn" type="submit">문제 생성</button>
+          </form>
+
+          <aside class="panel status-panel" id="status">
+            <div class="panel-heading">
+              <h2>처리 상태</h2>
+              <span id="jobLabel">Job 없음</span>
+            </div>
+
+            <ol class="steps" id="steps">
+              <li data-step="input">입력 검증</li>
+              <li data-step="cache">캐시 확인</li>
+              <li data-step="api">백엔드 요청</li>
+              <li data-step="validate">결과 검증</li>
+              <li data-step="save">저장</li>
+            </ol>
+
+            <dl class="stats">
+              <div><dt>캐시</dt><dd id="cacheStat">0건</dd></div>
+              <div><dt>최근 결과</dt><dd id="latestStat">없음</dd></div>
+              <div><dt>검증</dt><dd id="validationStat">대기</dd></div>
+              <div><dt>예상 비용</dt><dd id="costStat">$0</dd></div>
+            </dl>
+          </aside>
+        </section>
+
+        <section class="panel results-panel" id="results">
+          <div class="results-heading">
+            <div>
+              <h2>생성 결과</h2>
+              <p id="resultSummary">아직 생성된 문제가 없습니다.</p>
+            </div>
+            <div class="actions">
+              <button class="ghost-button" id="copyBtn" type="button">전체 복사</button>
+              <button class="tab-button active" type="button" data-view="cards">문항</button>
+              <button class="tab-button" type="button" data-view="json">JSON</button>
+            </div>
+          </div>
+          <div class="question-list" id="questionList"></div>
+          <pre class="json-view hidden" id="jsonView"></pre>
+        </section>
+
+        <section class="panel history-panel" id="history">
+          <div class="panel-heading">
+            <h2>생성 이력</h2>
+            <button class="ghost-button" id="clearHistoryBtn" type="button">이력 삭제</button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="questionTemplate">
+      <article class="question-card">
+        <div class="question-meta">
+          <span class="pill type"></span>
+          <span class="pill difficulty"></span>
+          <span class="topic"></span>
+        </div>
+        <h3></h3>
+        <div class="choices"></div>
+        <button class="answer-toggle" type="button">정답 보기</button>
+        <div class="answer-box hidden"></div>
+      </article>
+    </template>
+
+    <script src="./main.js"></script>
+  </body>
 </html>

@@ -4,7 +4,8 @@
   "description": "Stuttee mock backend for problem generation",
   "main": "server.js",
   "scripts": {
-    "start": "\"C:\\\\Program Files\\\\nodejs\\\\node.exe\" server.js"
+    "start": "node server.js",
+    "check": "node --check server.js"
   },
   "keywords": [],
   "author": "",

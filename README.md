@@ -1,11 +1,8 @@
-Stuttee (S.T) – MVP
+# Stutee (S.T) – MVP
 
-Stuttee 는 사용자가 학습 내용을 붙여넣으면,
-👉 AI가 자동으로 문제·정답·해설을 생성해주는 학습 보조 웹앱입니다.
+Stutee는 사용자가 학습 내용을 붙여넣으면 문제·정답·해설을 자동 생성해주는 학습 보조 웹앱입니다.
 
-MVP는 단일 페이지(SPA) 프론트엔드와 Node/Express 백엔드로 구성되며,
-기본적으로 Mock 기반 문제 생성을 제공합니다.
-OpenAI API Key를 설정하면 실제 AI 생성 기능을 사용할 수 있습니다.
+현재 버전은 AWS와 외부 LLM API 없이 실행되는 로컬 MVP입니다. 단일 페이지 프론트엔드와 Node/Express 백엔드로 구성되며, 백엔드는 규칙 기반 문제 생성 엔진을 제공합니다.
 
 🚀 프로젝트 구조
 Stuttee/
@@ -18,91 +15,72 @@ Stuttee/
     ├── server.js
     └── ...
 
-⚡ 빠른 시작 (Quickstart)
-1) 백엔드 실행
+## 빠른 시작
+
+```bash
 cd backend
+npm install
 npm start
+```
 
-
-만약 node가 PATH에 등록되어 있지 않다면:
-
-& "C:\Program Files\nodejs\node.exe" server.js
-
-
-서버 주소: http://localhost:4000
-
-환경 변수
-변수명	설명
-OPENAI_API_KEY	선택 사항. 존재하면 /generate 및 /translate가 OpenAI API 사용
-OPENAI_MODEL	기본값 gpt-4o-mini
-🌐 프론트엔드 실행
-
-frontend/index.html 파일을 브라우저로 직접 열면 됩니다.
+서버와 웹사이트 주소: http://localhost:4000
 
 주요 기능
 
-학습 텍스트 붙여넣기
-
-문제 개수 / 난이도 / 유형 선택 후 Generate
-
-생성된 문제 카드 표시
-
-문제
-
-선택형 보기 (해당 시)
-
-정답/해설 토글 표시
-
-Copy all
-→ 문제·정답·해설 전체를 텍스트 형태로 클립보드 복사
-
-Translate
-
-/translate 호출
-
-API Key 있으면 OpenAI 번역
-
-없으면 Mock 접두어 방식 번역
-
-언어: ko / en / ja
+- 학습 텍스트 입력
+- 객관식, 주관식, OX, 빈칸 문제 생성
+- 난이도/문항 수 선택
+- 정답/해설 토글
+- JSON 결과 보기
+- 전체 복사
+- 브라우저 localStorage 기반 캐시/이력/생성량 제한
 
 📡 백엔드 API 요약
-/generate (POST)
 
-OPENAI_API_KEY 없으면 Mock JSON 반환
+`POST /api/generate-quiz`
 
-있으면 OpenAI API 호출 → 실패 시 Mock으로 폴백
+요청:
 
-/translate (POST)
+```json
+{
+  "text": "학습 원문",
+  "difficulty": "medium",
+  "count": 5,
+  "questionTypes": ["multiple-choice", "short-answer", "true-false", "fill-blank"]
+}
+```
 
-API Key 있으면 실제 OpenAI 번역
+응답:
 
-없으면 Mock 문자열 반환
+```json
+{
+  "success": true,
+  "items": [
+    {
+      "type": "multiple-choice",
+      "question": "문제",
+      "choices": ["A", "B", "C", "D"],
+      "answer": "A",
+      "explanation": "해설",
+      "difficulty": "medium",
+      "topic": "주제",
+      "createdAt": "2026-05-09T00:00:00.000Z"
+    }
+  ]
+}
+```
 
-📌 구현 상세
+## 구현 상세
 
-CORS 활성화됨
+- CORS 활성화
+- DB 없음
+- 외부 LLM API 없음
+- 입력 길이/반복 입력/금칙어 검사
+- 생성 결과 캐싱은 브라우저 localStorage 사용
 
-DB 없음 (MVP)
+## 다음 단계
 
-오류 발생 시 사용자 친화적 메시지 제공(기본 Mock 처리)
-
-🔧 다음 단계 제안 (Next Steps)
-
-UI 개선
-
-에러 상태 UX 개선
-
-OpenAI 프롬프트 고도화
-
-.env 도입 및 보안 설정 정비
-
-선택형/서술형 문제 스타일 더 다양하게 확장
-
-📄 라이선스
-
-MIT License
-
-🙌 기여 및 문의
-
-버그 리포트, 기능 제안 언제든 환영합니다!
+- 실제 LLM Provider 연동
+- 로그인/사용자별 저장소
+- 서버 Redis rate limit
+- DB 기반 문제 이력 저장
