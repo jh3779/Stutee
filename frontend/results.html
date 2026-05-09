@@ -20,6 +20,10 @@
           </div>
         </div>
         <nav class="nav-list" aria-label="페이지 이동">
+          <a class="nav-link" href="home.html">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v5a2 2 0 002 2h2.5v-4h3v4H14a2 2 0 002-2v-5h1a1 1 0 00.707-1.707l-7-7z"/></svg>
+            홈
+          </a>
           <a class="nav-link" href="index.html">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
             문제 생성
@@ -33,14 +37,17 @@
             생성 이력
           </a>
         </nav>
+        <div id="profilePanel"></div>
+
         <div class="quota-box">
           <div class="quota-row">
             <span>오늘 생성</span>
             <strong id="dailyUsage">0 / 20</strong>
           </div>
           <div class="meter"><div id="dailyMeter" class="meter-fill"></div></div>
-          <p class="quota-hint">무료 플랜 · 분당 최대 5회</p>
+          <p class="quota-hint">게스트 · 분당 최대 5회</p>
         </div>
+        <div class="profile-panel" id="profilePanel"></div>
       </aside>
 
       <main class="workspace">
@@ -52,6 +59,7 @@
             <p id="resultSummary">최근 생성된 문제를 표시합니다.</p>
           </div>
           <div class="actions">
+            <a class="btn btn-ghost" id="topbarAuth" href="login.html">로그인</a>
             <a class="btn btn-ghost" href="index.html">
               <svg style="width:15px;height:15px;flex-shrink:0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
               문제 생성으로

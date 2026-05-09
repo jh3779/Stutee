@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCacheStat();
   validateInput();
 });
+window.addEventListener('stutee-auth-change', updateUsageUI);
 
 function bindElements() {
   Object.assign(el, {
@@ -63,6 +64,11 @@ function bindEvents() {
 /* ── 생성 핸들러 ── */
 async function handleGenerate(event) {
   event.preventDefault();
+
+  if (!getAuthSession()) {
+    showMsg('로그인 후 문제를 생성할 수 있습니다.', 'error');
+    return;
+  }
 
   const request    = getRequest();
   const validation = validateRequest(request);
@@ -120,6 +126,8 @@ async function handleGenerate(event) {
 }
 
 function finishGeneration(result) {
+  if (result.quota) setAuthQuota(result.quota);
+
   /* localStorage에 현재 결과 저장 → results.html에서 읽음 */
   writeJson(STORAGE_KEYS.currentResult, result);
 
@@ -134,9 +142,8 @@ function finishGeneration(result) {
 
 /* ── API 요청 ── */
 async function requestQuiz(request) {
-  const response = await fetch(`${API_BASE}/api/generate-quiz`, {
+  const data = await stuteeApi('/api/generate-quiz', {
     method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
       text:          request.text,
       difficulty:    request.difficulty,
@@ -145,18 +152,14 @@ async function requestQuiz(request) {
     }),
   });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || data.success === false) {
-    throw new Error(data?.error?.message || data?.message || `요청 실패 (${response.status})`);
-  }
-
   const items = Array.isArray(data.items)
     ? data.items
     : normalizeLegacy(data.questions || []);
 
   return {
-    meta:  data.meta  || {},
-    usage: data.usage || { inputTokens: 0, outputTokens: 0, estimatedCostUsd: 0 },
+    meta:   data.meta  || {},
+    usage:  data.usage || { inputTokens: 0, outputTokens: 0, estimatedCostUsd: 0 },
+    quota:  data.quota,
     items,
   };
 }
@@ -205,15 +208,16 @@ function validateResult(result) {
 
 /* ── 쿼터 ── */
 function checkQuota() {
-  const usage  = getUsage();
-  const now    = Date.now();
-  const recent = usage.events.filter((t) => now - t < 60_000);
-  if (getTodayCount(usage) >= LIMITS.dailyGenerations)  return { ok: false, message: '오늘 생성 한도를 초과했습니다.' };
-  if (recent.length >= LIMITS.minuteGenerations)         return { ok: false, message: '요청이 너무 빠릅니다. 잠시 후 다시 시도하세요.' };
+  const session = getAuthSession();
+  if (!session) return { ok: false, message: '로그인 후 문제를 생성할 수 있습니다.' };
+  if (session.quota && session.quota.remaining <= 0) {
+    return { ok: false, message: '오늘 생성 한도를 초과했습니다.' };
+  }
   return { ok: true };
 }
 
 function incrementUsage() {
+  if (getAuthSession()) return;
   const usage = getUsage();
   const today = todayKey();
   usage.days[today] = (usage.days[today] || 0) + 1;
@@ -223,6 +227,17 @@ function incrementUsage() {
 }
 
 function updateUsageUI() {
+  const session = getAuthSession();
+  if (session?.quota) {
+    const dailyUsage = document.querySelector('#dailyUsage');
+    const dailyMeter = document.querySelector('#dailyMeter');
+    const count = session.quota.dailyCount;
+    const limit = session.quota.dailyLimit;
+    if (dailyUsage) dailyUsage.textContent = `${count} / ${limit}`;
+    if (dailyMeter) dailyMeter.style.width = `${Math.min(100, (count / limit) * 100)}%`;
+    return;
+  }
+
   const count = getTodayCount(getUsage());
   const dailyUsage = document.querySelector('#dailyUsage');
   const dailyMeter = document.querySelector('#dailyMeter');

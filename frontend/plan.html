@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stutee — 플랜 변경</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">ST</div><div class="brand-text"><strong>Stutee</strong><span>Study Quiz Studio</span></div></div>
+        <nav class="nav-list" aria-label="페이지 이동"><a class="nav-link" href="home.html">홈</a><a class="nav-link" href="index.html">문제 생성</a><a class="nav-link" href="results.html">생성 결과</a><a class="nav-link" href="history.html">생성 이력</a></nav>
+        <div class="quota-box"><div class="quota-row"><span>오늘 생성</span><strong id="dailyUsage">0 / 20</strong></div><div class="meter"><div id="dailyMeter" class="meter-fill"></div></div><p class="quota-hint">로그인 필요 · 생성 제한</p></div>
+        <div class="profile-panel" id="profilePanel"></div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar"><div class="topbar-info"><h1>플랜 변경</h1><p>데모용 로컬 플랜을 선택합니다.</p></div><div class="actions"><a class="btn btn-ghost" id="topbarAuth" href="login.html">로그인</a><a class="btn btn-ghost" href="profile.html">프로필로</a></div></header>
+        <section class="plan-grid" id="planGrid">
+          <button class="plan-card" type="button" data-plan="free"><strong>무료</strong><span>일 20회 생성</span></button>
+          <button class="plan-card" type="button" data-plan="student"><strong>학생</strong><span>일 80회 생성</span></button>
+          <button class="plan-card" type="button" data-plan="pro"><strong>프로</strong><span>일 200회 생성</span></button>
+        </section>
+        <p class="form-message page-message" id="planMessage"></p>
+      </main>
+    </div>
+    <script src="./shared.js"></script>
+    <script src="./plan.js"></script>
+  </body>
+</html>
+

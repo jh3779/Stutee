@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stutee — 가입 탈퇴</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">ST</div><div class="brand-text"><strong>Stutee</strong><span>Study Quiz Studio</span></div></div>
+        <nav class="nav-list" aria-label="페이지 이동"><a class="nav-link" href="home.html">홈</a><a class="nav-link" href="index.html">문제 생성</a><a class="nav-link" href="results.html">생성 결과</a><a class="nav-link" href="history.html">생성 이력</a></nav>
+        <div class="quota-box"><div class="quota-row"><span>오늘 생성</span><strong id="dailyUsage">0 / 20</strong></div><div class="meter"><div id="dailyMeter" class="meter-fill"></div></div><p class="quota-hint">로그인 필요 · 생성 제한</p></div>
+        <div class="profile-panel" id="profilePanel"></div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar"><div class="topbar-info"><h1>가입 탈퇴</h1><p>계정과 사용자별 생성 이력을 삭제합니다.</p></div><div class="actions"><a class="btn btn-ghost" id="topbarAuth" href="login.html">로그인</a><a class="btn btn-ghost" href="profile.html">프로필로</a></div></header>
+        <section class="danger-panel">
+          <h2>탈퇴 전 확인</h2>
+          <p>탈퇴하면 계정, 세션, 생성 이력, 사용량 정보가 로컬 서버 저장소에서 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+          <form id="deleteAccountForm" class="danger-form">
+            <label><span>비밀번호 확인</span><input id="deletePassword" type="password" required minlength="8" autocomplete="current-password"></label>
+            <button class="btn btn-danger-fill" type="submit">계정 삭제</button>
+            <p class="form-message" id="deleteMessage"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script src="./shared.js"></script>
+    <script src="./account.js"></script>
+  </body>
+</html>
+

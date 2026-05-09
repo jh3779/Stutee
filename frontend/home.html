@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Stutee — 생성 이력</title>
+    <title>Stutee — 홈</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <div class="app-shell">
-
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">ST</div>
@@ -20,7 +19,7 @@
           </div>
         </div>
         <nav class="nav-list" aria-label="페이지 이동">
-          <a class="nav-link" href="home.html">
+          <a class="nav-link active" href="home.html">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v5a2 2 0 002 2h2.5v-4h3v4H14a2 2 0 002-2v-5h1a1 1 0 00.707-1.707l-7-7z"/></svg>
             홈
           </a>
@@ -32,7 +31,7 @@
             <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
             생성 결과
           </a>
-          <a class="nav-link active" href="history.html">
+          <a class="nav-link" href="history.html">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
             생성 이력
           </a>
@@ -40,54 +39,54 @@
         <div id="profilePanel"></div>
 
         <div class="quota-box">
-          <div class="quota-row">
-            <span>오늘 생성</span>
-            <strong id="dailyUsage">0 / 20</strong>
-          </div>
+          <div class="quota-row"><span>오늘 생성</span><strong id="dailyUsage">0 / 20</strong></div>
           <div class="meter"><div id="dailyMeter" class="meter-fill"></div></div>
           <p class="quota-hint">게스트 · 분당 최대 5회</p>
         </div>
-        <div class="profile-panel" id="profilePanel"></div>
       </aside>
 
       <main class="workspace">
-
         <header class="topbar">
           <div class="topbar-info">
-            <h1>생성 이력</h1>
-            <p id="historyCount">최근 생성한 문제 세트 목록입니다.</p>
+            <h1>홈</h1>
+            <p>학습 텍스트를 문제와 해설로 바꾸는 Stutee 작업 공간입니다.</p>
           </div>
           <div class="actions">
             <a class="btn btn-ghost" id="topbarAuth" href="login.html">로그인</a>
-            <a class="btn btn-ghost" href="index.html">
-              <svg style="width:15px;height:15px;flex-shrink:0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-              새 문제 생성
-            </a>
-            <button class="btn btn-ghost btn-danger" id="clearHistoryBtn" type="button">전체 삭제</button>
+            <a class="btn btn-primary" href="index.html">문제 생성 시작</a>
           </div>
         </header>
 
-        <!-- 이력 없음 -->
-        <div class="no-result-panel hidden" id="noHistoryPanel">
-          <div class="no-result-content">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <h2>생성 이력이 없습니다</h2>
-            <p>문제를 생성하면 이곳에 이력이 저장됩니다.</p>
-            <a class="btn btn-primary" href="index.html">문제 생성하러 가기</a>
+        <section class="home-hero">
+          <div>
+            <p class="eyebrow">Study Quiz Studio</p>
+            <h2>입력한 학습 내용을 바로 문제로 변환합니다.</h2>
+            <p>객관식, 주관식, OX, 빈칸 문제를 만들고 사용자 계정별로 생성 이력을 관리합니다.</p>
           </div>
-        </div>
-
-        <!-- 이력 목록 -->
-        <section class="history-panel" id="historyPanel">
-          <div class="history-list" id="historyList"></div>
+          <div class="home-metrics">
+            <div><span>문제 유형</span><strong>4개</strong></div>
+            <div><span>저장 방식</span><strong>계정별</strong></div>
+            <div><span>실행 환경</span><strong>Local</strong></div>
+          </div>
         </section>
 
+        <section class="home-grid">
+          <a class="home-card" href="index.html">
+            <strong>문제 생성</strong>
+            <span>학습 텍스트와 유형을 선택해 새 문제 세트를 만듭니다.</span>
+          </a>
+          <a class="home-card" href="history.html">
+            <strong>생성 이력</strong>
+            <span>로그인 계정에 저장된 문제 세트를 다시 확인합니다.</span>
+          </a>
+          <a class="home-card" href="profile.html">
+            <strong>프로필</strong>
+            <span>접근성, 로그아웃, 플랜 변경, 회원 탈퇴를 관리합니다.</span>
+          </a>
+        </section>
       </main>
     </div>
-
     <script src="./shared.js"></script>
-    <script src="./history.js"></script>
   </body>
 </html>
+

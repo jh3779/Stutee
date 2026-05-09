@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stutee — 프로필</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">ST</div><div class="brand-text"><strong>Stutee</strong><span>Study Quiz Studio</span></div></div>
+        <nav class="nav-list" aria-label="페이지 이동">
+          <a class="nav-link" href="home.html">홈</a>
+          <a class="nav-link" href="index.html">문제 생성</a>
+          <a class="nav-link" href="results.html">생성 결과</a>
+          <a class="nav-link" href="history.html">생성 이력</a>
+        </nav>
+        <div id="profilePanel"></div>
+
+        <div class="quota-box">
+          <div class="quota-row"><span>오늘 생성</span><strong id="dailyUsage">0 / 20</strong></div>
+          <div class="meter"><div id="dailyMeter" class="meter-fill"></div></div>
+          <p class="quota-hint">게스트 · 분당 최대 5회</p>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="topbar">
+          <div class="topbar-info"><h1>프로필</h1><p id="profileSummary">계정 상태와 설정 메뉴를 확인합니다.</p></div>
+          <div class="actions"><a class="btn btn-ghost" id="topbarAuth" href="login.html">로그인</a></div>
+        </header>
+        <section class="settings-page">
+          <div class="settings-card" id="profileCard"></div>
+          <div class="settings-list">
+            <a class="settings-item" href="accessibility.html"><strong>접근성 안내</strong><span>키보드 이동, 색상 대비, 표시 정책을 확인합니다.</span></a>
+            <a class="settings-item" href="logout.html" data-auth-required><strong>로그아웃</strong><span>현재 브라우저의 로그인 세션을 종료합니다.</span></a>
+            <a class="settings-item" href="plan.html" data-auth-required><strong>플랜 변경</strong><span>무료, 학생, 프로 플랜 중 하나를 선택합니다.</span></a>
+            <a class="settings-item danger" href="account.html" data-auth-required><strong>가입 탈퇴</strong><span>계정과 사용자별 생성 이력을 삭제합니다.</span></a>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="./shared.js"></script>
+    <script src="./profile.js"></script>
+  </body>
+</html>
+
