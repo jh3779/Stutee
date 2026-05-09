@@ -3,146 +3,226 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Stutee - AI 문제 생성</title>
+    <title>Stutee — 문제 생성</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <div class="app-shell">
+
+      <!-- ─── 사이드바 ─── -->
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">ST</div>
-          <div>
+          <div class="brand-text">
             <strong>Stutee</strong>
             <span>Study Quiz Studio</span>
           </div>
         </div>
 
         <nav class="nav-list" aria-label="페이지 이동">
-          <a class="nav-link active" href="#generator">생성</a>
-          <a class="nav-link" href="#results">결과</a>
-          <a class="nav-link" href="#history">이력</a>
-          <a class="nav-link" href="#status">상태</a>
+          <a class="nav-link active" href="index.html">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+            문제 생성
+          </a>
+          <a class="nav-link" href="results.html">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+            생성 결과
+          </a>
+          <a class="nav-link" href="history.html">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+            생성 이력
+          </a>
         </nav>
 
         <div class="quota-box">
-          <span>오늘 생성</span>
-          <strong id="dailyUsage">0 / 20</strong>
-          <div class="meter" aria-hidden="true"><i id="dailyMeter"></i></div>
+          <div class="quota-row">
+            <span>오늘 생성</span>
+            <strong id="dailyUsage">0 / 20</strong>
+          </div>
+          <div class="meter" aria-hidden="true">
+            <div id="dailyMeter" class="meter-fill"></div>
+          </div>
+          <p class="quota-hint">무료 플랜 · 분당 최대 5회</p>
         </div>
       </aside>
 
+      <!-- ─── 메인 작업 영역 ─── -->
       <main class="workspace">
-        <section class="topbar">
-          <div>
-            <h1>학습 문제 생성</h1>
+
+        <header class="topbar">
+          <div class="topbar-info">
+            <h1>문제 생성</h1>
             <p id="statusText">학습 텍스트를 입력하고 문제를 생성하세요.</p>
           </div>
           <div class="actions">
-            <button class="ghost-button" id="sampleBtn" type="button">샘플 입력</button>
-            <button class="ghost-button danger" id="resetBtn" type="button">초기화</button>
+            <button class="btn btn-ghost" id="sampleBtn" type="button">샘플 입력</button>
+            <button class="btn btn-ghost btn-danger" id="resetBtn" type="button">초기화</button>
           </div>
-        </section>
+        </header>
 
-        <section class="content-grid">
-          <form class="panel generator-panel" id="generator">
-            <div class="panel-heading">
-              <h2>원문 입력</h2>
-              <span id="charCount">0 / 5000</span>
+        <!-- 문제 생성 + 처리 상태 (같은 페이지) -->
+        <div class="content-grid">
+
+          <!-- 문제 생성 폼 -->
+          <form class="panel generator-panel" id="generator" novalidate>
+            <div class="panel-head">
+              <div>
+                <h2>원문 입력</h2>
+                <p class="sub">강의 노트, 교재 요약, 발표 자료를 붙여 넣으세요.</p>
+              </div>
+              <span class="char-badge" id="charCount">0 / 5000</span>
             </div>
-            <textarea id="studyText" rows="12" maxlength="5000" placeholder="강의 노트, 교재 요약, 발표 자료 내용을 붙여 넣으세요."></textarea>
-            <p class="field-message" id="inputMessage" role="status"></p>
 
-            <div class="option-grid">
-              <fieldset>
+            <textarea
+              id="studyText"
+              rows="12"
+              maxlength="5000"
+              placeholder="여기에 학습 내용을 입력하세요 (최소 80자)…"
+              spellcheck="false"
+            ></textarea>
+            <p class="field-msg" id="inputMessage" role="status" aria-live="polite"></p>
+
+            <div class="options-row">
+
+              <fieldset class="opt-group">
                 <legend>문제 유형</legend>
-                <label><input type="checkbox" name="questionType" value="multiple-choice" checked> 객관식</label>
-                <label><input type="checkbox" name="questionType" value="short-answer" checked> 주관식</label>
-                <label><input type="checkbox" name="questionType" value="true-false" checked> OX</label>
-                <label><input type="checkbox" name="questionType" value="fill-blank" checked> 빈칸</label>
-              </fieldset>
-
-              <fieldset>
-                <legend>난이도</legend>
-                <div class="segmented">
-                  <label><input type="radio" name="difficulty" value="easy"><span>쉬움</span></label>
-                  <label><input type="radio" name="difficulty" value="medium" checked><span>보통</span></label>
-                  <label><input type="radio" name="difficulty" value="hard"><span>어려움</span></label>
+                <div class="check-list">
+                  <label class="check-item">
+                    <input type="checkbox" name="questionType" value="multiple-choice" checked>
+                    <span class="check-box"></span>
+                    <span class="type-pill mc">객관식</span>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="questionType" value="short-answer" checked>
+                    <span class="check-box"></span>
+                    <span class="type-pill sa">주관식</span>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="questionType" value="true-false" checked>
+                    <span class="check-box"></span>
+                    <span class="type-pill tf">OX</span>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="questionType" value="fill-blank" checked>
+                    <span class="check-box"></span>
+                    <span class="type-pill fb">빈칸</span>
+                  </label>
                 </div>
               </fieldset>
 
-              <label class="range-control">
-                <span>문항 수</span>
-                <input id="count" type="range" min="1" max="20" value="5">
-                <strong id="countValue">5</strong>
-              </label>
+              <fieldset class="opt-group">
+                <legend>난이도</legend>
+                <div class="segmented">
+                  <label>
+                    <input type="radio" name="difficulty" value="easy">
+                    <span>쉬움</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="difficulty" value="medium" checked>
+                    <span>보통</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="difficulty" value="hard">
+                    <span>어려움</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="opt-group count-group">
+                <div class="count-head">
+                  <legend>문항 수</legend>
+                  <strong id="countValue">5</strong>
+                </div>
+                <input id="count" type="range" min="1" max="20" value="5" class="slider">
+                <div class="range-marks">
+                  <span>1</span><span>10</span><span>20</span>
+                </div>
+              </div>
+
             </div>
 
-            <button class="primary-button" id="generateBtn" type="submit">문제 생성</button>
+            <button class="btn btn-primary btn-generate" id="generateBtn" type="submit">
+              <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+              문제 생성
+            </button>
+
+            <!-- 생성 완료 후 표시되는 결과 이동 CTA -->
+            <div class="success-cta hidden" id="successCta">
+              <div class="success-badge">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                문제 생성이 완료되었습니다.
+              </div>
+              <a class="btn btn-primary" href="results.html" id="goResultsBtn">
+                생성 결과 보기
+                <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </a>
+            </div>
           </form>
 
+          <!-- 처리 상태 패널 -->
           <aside class="panel status-panel" id="status">
-            <div class="panel-heading">
-              <h2>처리 상태</h2>
-              <span id="jobLabel">Job 없음</span>
+            <div class="panel-head">
+              <div>
+                <h2>처리 상태</h2>
+                <code class="job-id" id="jobLabel">Job 없음</code>
+              </div>
             </div>
 
             <ol class="steps" id="steps">
-              <li data-step="input">입력 검증</li>
-              <li data-step="cache">캐시 확인</li>
-              <li data-step="api">백엔드 요청</li>
-              <li data-step="validate">결과 검증</li>
-              <li data-step="save">저장</li>
+              <li data-step="input">
+                <span class="step-num">1</span>
+                <span class="step-label">입력 검증</span>
+                <span class="step-check">✓</span>
+              </li>
+              <li data-step="cache">
+                <span class="step-num">2</span>
+                <span class="step-label">캐시 확인</span>
+                <span class="step-check">✓</span>
+              </li>
+              <li data-step="api">
+                <span class="step-num">3</span>
+                <span class="step-label">백엔드 요청</span>
+                <span class="step-check">✓</span>
+              </li>
+              <li data-step="validate">
+                <span class="step-num">4</span>
+                <span class="step-label">결과 검증</span>
+                <span class="step-check">✓</span>
+              </li>
+              <li data-step="save">
+                <span class="step-num">5</span>
+                <span class="step-label">저장 완료</span>
+                <span class="step-check">✓</span>
+              </li>
             </ol>
 
-            <dl class="stats">
-              <div><dt>캐시</dt><dd id="cacheStat">0건</dd></div>
-              <div><dt>최근 결과</dt><dd id="latestStat">없음</dd></div>
-              <div><dt>검증</dt><dd id="validationStat">대기</dd></div>
-              <div><dt>예상 비용</dt><dd id="costStat">$0</dd></div>
-            </dl>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <span>캐시 항목</span>
+                <strong id="cacheStat">0건</strong>
+              </div>
+              <div class="stat-card">
+                <span>최근 결과</span>
+                <strong id="latestStat">없음</strong>
+              </div>
+              <div class="stat-card">
+                <span>검증 상태</span>
+                <strong id="validationStat">대기</strong>
+              </div>
+              <div class="stat-card">
+                <span>예상 비용</span>
+                <strong id="costStat">$0</strong>
+              </div>
+            </div>
           </aside>
-        </section>
 
-        <section class="panel results-panel" id="results">
-          <div class="results-heading">
-            <div>
-              <h2>생성 결과</h2>
-              <p id="resultSummary">아직 생성된 문제가 없습니다.</p>
-            </div>
-            <div class="actions">
-              <button class="ghost-button" id="copyBtn" type="button">전체 복사</button>
-              <button class="tab-button active" type="button" data-view="cards">문항</button>
-              <button class="tab-button" type="button" data-view="json">JSON</button>
-            </div>
-          </div>
-          <div class="question-list" id="questionList"></div>
-          <pre class="json-view hidden" id="jsonView"></pre>
-        </section>
-
-        <section class="panel history-panel" id="history">
-          <div class="panel-heading">
-            <h2>생성 이력</h2>
-            <button class="ghost-button" id="clearHistoryBtn" type="button">이력 삭제</button>
-          </div>
-          <div class="history-list" id="historyList"></div>
-        </section>
+        </div>
       </main>
     </div>
 
-    <template id="questionTemplate">
-      <article class="question-card">
-        <div class="question-meta">
-          <span class="pill type"></span>
-          <span class="pill difficulty"></span>
-          <span class="topic"></span>
-        </div>
-        <h3></h3>
-        <div class="choices"></div>
-        <button class="answer-toggle" type="button">정답 보기</button>
-        <div class="answer-box hidden"></div>
-      </article>
-    </template>
-
+    <script src="./shared.js"></script>
     <script src="./main.js"></script>
   </body>
 </html>
